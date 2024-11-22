@@ -1,0 +1,63 @@
+name: Deploy release
+run-name: Deploy new ${{ inputs.bump_type }} release
+
+on:
+  workflow_dispatch:
+    inputs:
+      bump_type:
+        description: 'Version bump type'
+        required: true
+        type: choice
+        options:
+          - minor
+          - patch
+
+permissions:
+  contents: write
+
+jobs:
+  deploy_release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: 'main'
+          ssh-key: ${{ secrets.DEPLOY_PRIVATE_KEY }}
+
+      - name: Configure git
+        run: |
+          git config --local user.email "github-actions@github.com"
+          git config --local user.name "GitHub Actions"
+      
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+
+      - name: Perform version bump
+        run: |
+          if [ "${{ github.event.inputs.bump_type }}" = "minor" ]; then
+            yarn version --minor
+          elif [ "${{ github.event.inputs.bump_type }}" = "patch" ]; then
+            yarn version --patch
+          else
+            echo "You must define the version bump after 'yarn deploy': patch or minor."
+            exit 1
+          fi
+
+      - name: Commit changes
+        run: |
+          git push --follow-tags
+
+      - name: HTTP Request Action
+        id: http_request
+        uses: fjogeleit/http-request-action@v1.16.3
+        with:
+          url: https://jsonplaceholder.typicode.com/todos/1
+          method: GET
+          
+      - name: Print response
+        run: echo Response status ${{ steps.http_request.outputs.status }}
