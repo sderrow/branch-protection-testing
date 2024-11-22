@@ -24,7 +24,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-tags: true
           ref: 'main'
           ssh-key: ${{ secrets.DEPLOY_PRIVATE_KEY }}
 
@@ -62,3 +62,11 @@ jobs:
           
       - name: Print response
         run: echo Response status ${{ steps.http_request.outputs.status }}
+      
+      - name: Test curl
+        run: |
+          t=$(curl -s "https://jsonplaceholder.typicode.com/todos/1") && echo "$t" &
+          r=$(curl -s "https://jsonplaceholder.typicode.com/todos/1") && echo "$r" &
+          wait
+
+      
