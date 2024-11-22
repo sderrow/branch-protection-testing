@@ -49,6 +49,11 @@ jobs:
             exit 1
           fi
 
+      - name: Test exit
+        run: |
+          echo "YOU SHALL NOT PASS"
+          exit 1
+
       - name: Commit changes
         run: |
           git push --follow-tags
