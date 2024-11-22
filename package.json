@@ -1,0 +1,8 @@
+{
+  "name": "branch-protection-testing",
+  "version": "1.0.0",
+  "description": "Testing GH branch protection",
+  "main": "index.js",
+  "author": "Sean Derrow <sean.derrow@gmail.com>",
+  "license": "MIT"
+}
