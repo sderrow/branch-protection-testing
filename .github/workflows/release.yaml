@@ -32,6 +32,8 @@ jobs:
         run: |
           git config --local user.email "github-actions@github.com"
           git config --local user.name "GitHub Actions"
+          git config --local gpg.format ssh
+          git config --local commit.gpgsign true
       
       - name: Use Node.js
         uses: actions/setup-node@v4
