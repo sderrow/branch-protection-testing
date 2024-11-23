@@ -4,5 +4,8 @@
   "description": "Testing GH branch protection",
   "main": "index.js",
   "author": "Sean Derrow <sean.derrow@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "deploy": "sh -c 'gh workflow run release.yaml -f bump_type=$0'"
+  }
 }
