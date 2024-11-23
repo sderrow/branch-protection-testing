@@ -30,9 +30,11 @@ jobs:
 
       - name: Configure git
         run: |
+          echo "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEh4kk4oGvFI1qBvzj5o61iv8tNLS0ir+Edf7t6rkHbk github-actions@github.com" >> key.pub
           git config --local user.email "github-actions@github.com"
           git config --local user.name "GitHub Actions"
           git config --local gpg.format ssh
+          git config --local user.signingkey key.pub
           git config --local commit.gpgsign true
       
       - name: Use Node.js
