@@ -1,0 +1,27 @@
+name: Checkout Test
+on: # Trigger the workflow on push or pull request if it's impacting the main branch
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, reopened, synchronize, ready_for_review]
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-test:
+    name: Build & Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Echo
+        run: |
+          echo GITHUB_REF: "$GITHUB_REF"
+          echo GITHUB_SHA: "$GITHUB_SHA"
+          echo headsha ${{ github.event.pull_request.head.sha}}
+          git rev-parse HEAD
