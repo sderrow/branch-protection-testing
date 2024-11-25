@@ -1,6 +1,6 @@
 {
   "name": "branch-protection-testing",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "Testing GH branch protection",
   "main": "index.js",
   "author": "Sean Derrow <sean.derrow@gmail.com>",
