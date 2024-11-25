@@ -28,6 +28,17 @@ jobs:
           ref: 'main'
           ssh-key: ${{ secrets.DEPLOY_PRIVATE_KEY }}
 
+      - name: Check latest commit for tag
+        run: |
+          # Get the hash of the latest commit
+          latest_commit=$(git rev-parse HEAD)
+
+          # Check if the latest commit is already released
+          if git describe --exact-match --tags $latest_commit >/dev/null 2>&1; then
+            echo "The latest commit is already released."
+            exit 1
+          fi
+
       - name: Configure git
         run: |
           git config --local user.email "github-actions@github.com"
@@ -48,11 +59,6 @@ jobs:
             echo "You must define the version bump after 'yarn deploy': patch or minor."
             exit 1
           fi
-
-      - name: Test exit
-        run: |
-          echo "YOU SHALL NOT PASS"
-          exit 1
 
       - name: Commit changes
         run: |
